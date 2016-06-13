@@ -12,21 +12,16 @@ object TwitterStreamApp {
 
   def main(args: Array[String]) {
     val config = new SparkConf()
-    config.setAppName("Twitter Sentiments").setMaster("local[5]")
+    config.setAppName("Twitter Sentiments").setMaster("local[2]")
 
 
     val ssc = new StreamingContext(config, Seconds(10))
     ssc.sparkContext.setLogLevel("ERROR")
 
     val tw = TwitterUtils.createStream(ssc, None, Seq("@roger,@bell,@telus,@apple"))
-
-
-
-    tw.filter(s => s.getLang.equals("en")
-    ).foreachRDD(rdd => {
+    tw.filter( s=>s.getLang.equalsIgnoreCase("en") ).foreachRDD(rdd => {
       rdd.foreach(line => {
         println(line.getText)
-
       })
     })
     ssc.start()

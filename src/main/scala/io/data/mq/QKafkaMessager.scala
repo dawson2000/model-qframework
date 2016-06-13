@@ -13,10 +13,10 @@ class QKafkaMessager extends Runnable{
   private var topic: String = null
   private var isAsync: Boolean = false
 
-  def this(topic: String, isAsync: Boolean){
+  def this(topic: String,   brokerHostName:String   , isAsync: Boolean){
     this
     val props: Properties = new Properties
-    props.put("bootstrap.servers", "localhost:9092")
+    props.put("bootstrap.servers", brokerHostName + ":9092")
     props.put("client.id", "DemoProducer")
     props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")
     props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer")
